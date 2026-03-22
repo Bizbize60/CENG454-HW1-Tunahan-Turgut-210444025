@@ -37,18 +37,18 @@ public class FlightController : MonoBehaviour
 
     float yawInput = Input.GetAxis("Horizontal");
     transform.Rotate(Vector3.up, yawInput * yawSpeed * Time.deltaTime);
-    if (currentSpeed < minTakeoffSpeed) return;
+    float controlFactor = Mathf.Clamp01(currentSpeed / minTakeoffSpeed);
 
     float pitchInput = Input.GetAxis("Vertical"); 
      // to rotate it up and down we use x-axis rather than  y-axis , I haven't exactly understood the math behind it,
      // to make  it turn  left and right  we use y-axis rathen than x-axis ???  they are reverse of each other  
-    transform.Rotate(Vector3.right, -pitchInput * pitchSpeed * Time.deltaTime);
+    transform.Rotate(Vector3.right, -pitchInput * pitchSpeed * controlFactor * Time.deltaTime);
 
     //rotation 
     float rollInput = 0f;
     if (Input.GetKey(KeyCode.Q)) rollInput = 1f;  // l
     else if (Input.GetKey(KeyCode.E)) rollInput = -1f;
-    transform.Rotate(Vector3.forward, rollInput * rollSpeed * Time.deltaTime);   
+    transform.Rotate(Vector3.forward, rollInput * rollSpeed * controlFactor * Time.deltaTime);   
 
     //according to the videos I watched , Time.deltaTime is essantial , most probably it prevents the latency and some vibrations 
     // in Unity Tutorial there is a code block for camera also that includes LateUpdate() but  I have combined camera and aircraft in a 
