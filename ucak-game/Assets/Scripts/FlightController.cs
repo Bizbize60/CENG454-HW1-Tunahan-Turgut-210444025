@@ -14,7 +14,7 @@ public class FlightController : MonoBehaviour
     [SerializeField] private float minTakeoffSpeed   = 10f;   
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float currentSpeed = 0f;
- 
+    [SerializeField] private float glideGravity = 2f;
     private Rigidbody rb; // Task 3-A 
  
     void Start() 
@@ -27,6 +27,7 @@ public class FlightController : MonoBehaviour
     { 
         HandleRotation(); 
         HandleThrust(); 
+	ApplyGlide();
     } 
  
     private void HandleRotation() 
@@ -74,4 +75,16 @@ public class FlightController : MonoBehaviour
     
     transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime,Space.Self);
     } 
+    private void ApplyGlide ()
+    {
+      if(currentSpeed < minTakeoffSpeed)
+      { 
+      	float gravityFactor  = 1f -(currentSpeed /minTakeoffSpeed);
+        transform.Translate(Vector3.down * glideGravity *gravityFactor*Time.deltaTime, Space.World);
+
+       }     
+
+
+
+}
 }
